@@ -15,18 +15,22 @@ const preg = document.querySelector(".pregunta");
 const respostes = document.querySelector(".respostes");
 const startGame = document.getElementById("startGame");
 const scoreboard = document.querySelector(".scoreboard");
+const resetGame = document.getElementById("resetGame");
 
 //Game state object with answers
 const gameState = {
+  gameOver: false,
   currQuestion: 0,
   userAnswers: [],
 };
 
 startGame.addEventListener("click", () => {
   gameStart();
+  startGame.style.display = "none";
 })
 
 function gameStart() {
+  gameState.gameOver = false;
   generateQuestion();
 }
 
@@ -92,14 +96,33 @@ function getScore() {
 }
 
 function renderScore(score) {
-  gameOver = true;
+  gameState.gameOver = true;
   scoreboard.innerHTML = "";
   const scores = document.createElement("p");
   scores.innerText = `You got a score of: ${score} / ${preguntes.length}`;
   scoreboard.appendChild(scores);
   container.appendChild(scoreboard);
+  resetGame.style.display = "block";
+  resetGame.addEventListener("click", () => {
+    reseetGame();
+    resetGame.style.display = "none";
+    scoreboard.innerHTML = "";
+  })
 }
 
-function resetGame() {
-
+function reseetGame() {
+  gameState.currQuestion = 0;
+  fetch('questions.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json' // tell PHP we are sending JSON
+    },
+    body: JSON.stringify({ gameOver: gameState.gameOver })
+  })
+    .then(response => response.json())
+    .then(data => {
+      preguntes = data;
+      gameStart();
+    })// data returned from PHP
+    .catch(err => console.error(err));
 }
