@@ -1,0 +1,7 @@
+FROM php:apache
+
+RUN docker-php-ext-install
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+

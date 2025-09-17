@@ -1,32 +1,32 @@
-//Import the JSON as a module
-import data from "./data.js";
+let preguntes = []
+let preguntesCorrectes;
+
+//Get the data from the php file
+fetch('questions.php')
+  .then(response => response.json()) // Parse the JSON automatically
+  .then(data => {
+    preguntes = data;
+  })
+  .catch(err => console.error(err));
 
 //Get the base fields for rendering
 const container = document.querySelector(".container");
 const preg = document.querySelector(".pregunta");
 const respostes = document.querySelector(".respostes");
 const startGame = document.getElementById("startGame");
+const scoreboard = document.querySelector(".scoreboard");
 
 //Game state object with answers
 const gameState = {
-  gameOver: false,
   currQuestion: 0,
   userAnswers: [],
 };
-//let gameOver = true;
-//let currQuestion = 0;
-//let correctAnswers = 0;
-//Get the questions
-let preguntes = data["preguntes"];
-
-//TODO: Create a way for rendering one question and it's responses at a time
 
 startGame.addEventListener("click", () => {
   gameStart();
 })
 
 function gameStart() {
-  gameState.gameOver = false;
   generateQuestion();
 }
 
@@ -54,10 +54,52 @@ function generateQuestion() {
     respostes.appendChild(resp);
     container.appendChild(respostes);
     resp.addEventListener("click", () => {
-      gameState.currQuestion++;
-      generateQuestion();
+      checkGameState();
       gameState.userAnswers.push({ id: preguntaID, resposta: answers.indexOf(resposta) });
     })
   })
 }
 
+function checkGameState() {
+  if (gameState.currQuestion + 1 == preguntes.length) {
+    showGameResults();
+  } else {
+    gameState.currQuestion++;
+    generateQuestion();
+  }
+}
+
+function showGameResults() {
+  //Cleanup all of the shit
+  container.innerHTML = "";
+  startGame.classList.add("hidden");
+  getScore();
+}
+
+function getScore() {
+  fetch('submit.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json' // tell PHP we are sending JSON
+    },
+    body: JSON.stringify(gameState.userAnswers)
+  })
+    .then(response => response.json())
+    .then(data => {
+      renderScore(data.score);
+    })// data returned from PHP
+    .catch(err => console.error(err));
+}
+
+function renderScore(score) {
+  gameOver = true;
+  scoreboard.innerHTML = "";
+  const scores = document.createElement("p");
+  scores.innerText = `You got a score of: ${score} / ${preguntes.length}`;
+  scoreboard.appendChild(scores);
+  container.appendChild(scoreboard);
+}
+
+function resetGame() {
+
+}

@@ -1,0 +1,145 @@
+{
+  "preguntes": [
+    {
+      "id": 1,
+      "pregunta": "Quina marca de cotxes utilitza el lema 'Ultimate Driving Machine'?",
+      "respostes": ["BMW", "Mercedes-Benz", "Audi", "Lexus"],
+      "resposta_correcta": 0,
+      "imatge": "https://exemple.com/bmw.jpg"
+    },
+    {
+      "id": 2,
+      "pregunta": "Quina marca de beguda utilitza l’eslògan 'Open Happiness'?",
+      "respostes": ["Pepsi", "Coca-Cola", "Fanta", "Sprite"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/cocacola.jpg"
+    },
+    {
+      "id": 3,
+      "pregunta": "Quina marca de tecnologia utilitza el logotip d’una poma mossegada?",
+      "respostes": ["Samsung", "Apple", "Huawei", "Sony"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/apple.jpg"
+    },
+    {
+      "id": 4,
+      "pregunta": "Quina marca de menjar ràpid és famosa pel lema 'I’m Lovin’ It'?",
+      "respostes": ["Burger King", "McDonald’s", "KFC", "Subway"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/mcdonalds.jpg"
+    },
+    {
+      "id": 5,
+      "pregunta": "Quina marca d’esport utilitza l’eslògan 'Just Do It'?",
+      "respostes": ["Adidas", "Puma", "Nike", "Reebok"],
+      "resposta_correcta": 2,
+      "imatge": "https://exemple.com/nike.jpg"
+    },
+    {
+      "id": 6,
+      "pregunta": "Quina marca de cafè és coneguda pel logotip verd amb una sirena?",
+      "respostes": ["Costa Coffee", "Nespresso", "Starbucks", "Dunkin’"],
+      "resposta_correcta": 2,
+      "imatge": "https://exemple.com/starbucks.jpg"
+    },
+    {
+      "id": 7,
+      "pregunta": "Quina marca de cotxes té com a lema 'Vorsprung durch Technik'?",
+      "respostes": ["Audi", "Volkswagen", "Porsche", "Opel"],
+      "resposta_correcta": 0,
+      "imatge": "https://exemple.com/audi.jpg"
+    },
+    {
+      "id": 8,
+      "pregunta": "Quina marca de moda té com a logotip dues lletres entrellaçades 'CC'?",
+      "respostes": ["Prada", "Chanel", "Gucci", "Louis Vuitton"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/chanel.jpg"
+    },
+    {
+      "id": 9,
+      "pregunta": "Quina marca de consoles és coneguda pel logotip blau amb botons de comandament?",
+      "respostes": ["Xbox", "PlayStation", "Nintendo", "Sega"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/playstation.jpg"
+    },
+    {
+      "id": 10,
+      "pregunta": "Quina marca de telèfons té com a eslògan 'Do What You Can’t'?",
+      "respostes": ["Samsung", "Xiaomi", "OnePlus", "Google"],
+      "resposta_correcta": 0,
+      "imatge": "https://exemple.com/samsung.jpg"
+    },
+    {
+      "id": 11,
+      "pregunta": "Quina marca d’aigua embotellada té com a lema 'Live Young'?",
+      "respostes": ["Evian", "Perrier", "Vichy Catalan", "San Pellegrino"],
+      "resposta_correcta": 0,
+      "imatge": "https://exemple.com/evian.jpg"
+    },
+    {
+      "id": 12,
+      "pregunta": "Quina marca de xocolata utilitza l’eslògan 'Have a Break, Have a ...'?",
+      "respostes": ["KitKat", "Snickers", "Mars", "Twix"],
+      "resposta_correcta": 0,
+      "imatge": "https://exemple.com/kitkat.jpg"
+    },
+    {
+      "id": 13,
+      "pregunta": "Quina marca de roba esportiva té com a lema 'Impossible is Nothing'?",
+      "respostes": ["Puma", "Nike", "Adidas", "Under Armour"],
+      "resposta_correcta": 2,
+      "imatge": "https://exemple.com/adidas.jpg"
+    },
+    {
+      "id": 14,
+      "pregunta": "Quina marca de gelats és coneguda pel nom italià i logotip blau?",
+      "respostes": ["Ben & Jerry’s", "Häagen-Dazs", "Carte d’Or", "Gelato Italiano"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/haagen-dazs.jpg"
+    },
+    {
+      "id": 15,
+      "pregunta": "Quina marca de banc utilitza el lema 'Because you’re worth it'?",
+      "respostes": ["Santander", "BBVA", "CaixaBank", "Cap d’aquestes"],
+      "resposta_correcta": 3,
+      "imatge": "https://exemple.com/loreal.jpg"
+    },
+    {
+      "id": 16,
+      "pregunta": "Quina marca de motocicletes és coneguda pel logotip amb ales?",
+      "respostes": ["Harley-Davidson", "Honda", "Yamaha", "Ducati"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/honda.jpg"
+    },
+    {
+      "id": 17,
+      "pregunta": "Quina marca de càmeres és famosa pel lema 'Capture the Future'?",
+      "respostes": ["Canon", "Nikon", "Sony", "Fujifilm"],
+      "resposta_correcta": 2,
+      "imatge": "https://exemple.com/sony.jpg"
+    },
+    {
+      "id": 18,
+      "pregunta": "Quina marca de perfums utilitza el número '5' en el seu producte icònic?",
+      "respostes": ["Dior", "Chanel", "Gucci", "Armani"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/chanel5.jpg"
+    },
+    {
+      "id": 19,
+      "pregunta": "Quina marca de refrescos té com a color principal el taronja?",
+      "respostes": ["Sprite", "Pepsi", "Fanta", "7Up"],
+      "resposta_correcta": 2,
+      "imatge": "https://exemple.com/fanta.jpg"
+    },
+    {
+      "id": 20,
+      "pregunta": "Quina marca de joguines és coneguda pels seus blocs de construcció?",
+      "respostes": ["Playmobil", "Lego", "Mattel", "Hasbro"],
+      "resposta_correcta": 1,
+      "imatge": "https://exemple.com/lego.jpg"
+    }
+  ]
+}
+

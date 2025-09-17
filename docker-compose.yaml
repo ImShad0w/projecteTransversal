@@ -1,0 +1,9 @@
+# Hi ha 1 contenidor
+# 1. php amb apache (la nostra aplicació web) que la trobaràs a http://localhost:8080
+services:
+  web:
+    image: php:apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/var/www/html
