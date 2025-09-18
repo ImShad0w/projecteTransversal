@@ -16,12 +16,49 @@ const respostes = document.querySelector(".respostes");
 const startGame = document.getElementById("startGame");
 const scoreboard = document.querySelector(".scoreboard");
 const resetGame = document.getElementById("resetGame");
+const timerDiv = document.getElementById("timerDiv");
 
 //Game state object with answers
 const gameState = {
   gameOver: false,
   currQuestion: 0,
   userAnswers: [],
+};
+
+const timer = {
+  time: 30,
+  timerID: null, // store interval ID here
+
+  setTimer: function () {
+    timerDiv.innerHTML = "";
+    const time = document.createElement("h1");
+    time.textContent = timer.time;
+    timerDiv.appendChild(time);
+  },
+
+  resetTimer: function () {
+    this.stopTimer();
+    this.time = 30;
+    timerDiv.innerHTML = "";
+  },
+
+  startTimer: function () {
+    this.timerID = setInterval(() => {
+      if (this.time > 0) {
+        this.time--;
+        this.setTimer();
+      } else {
+        this.stopTimer();
+        showGameResults();
+        timerDiv.innerHTML = "";
+      }
+    }, 1000);
+  },
+
+  stopTimer: function () {
+    clearInterval(this.timerID);
+    console.log("Timer stopped");
+  }
 };
 
 startGame.addEventListener("click", () => {
@@ -32,6 +69,8 @@ startGame.addEventListener("click", () => {
 function gameStart() {
   gameState.gameOver = false;
   generateQuestion();
+  timer.startTimer();
+  showCurrenQuestion();
 }
 
 function generateQuestion() {
@@ -58,18 +97,19 @@ function generateQuestion() {
     respostes.appendChild(resp);
     container.appendChild(respostes);
     resp.addEventListener("click", () => {
-      checkGameState();
       gameState.userAnswers.push({ id: preguntaID, resposta: answers.indexOf(resposta) });
+      gameState.currQuestion++;
+      checkGameState();
     })
   })
 }
 
 function checkGameState() {
-  if (gameState.currQuestion + 1 == preguntes.length) {
+  if (gameState.currQuestion == preguntes.length || timer.time == 0) {
     showGameResults();
   } else {
-    gameState.currQuestion++;
     generateQuestion();
+    showCurrenQuestion();
   }
 }
 
@@ -91,6 +131,7 @@ function getScore() {
     .then(response => response.json())
     .then(data => {
       renderScore(data.score);
+      timer.resetTimer();
     })// data returned from PHP
     .catch(err => console.error(err));
 }
@@ -121,8 +162,18 @@ function reseetGame() {
   })
     .then(response => response.json())
     .then(data => {
+      gameState.userAnswers.length = 0;
       preguntes = data;
+      timer.resetTimer();
       gameStart();
     })// data returned from PHP
     .catch(err => console.error(err));
+}
+
+
+function showCurrenQuestion() {
+  scoreboard.innerHTML = "";
+  const currentScore = document.createElement("h4");
+  currentScore.textContent = `Question ${gameState.currQuestion + 1} out of: ${preguntes.length}`;
+  scoreboard.appendChild(currentScore);
 }
