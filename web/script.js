@@ -17,6 +17,7 @@ const startGame = document.getElementById("startGame");
 const scoreboard = document.querySelector(".scoreboard");
 const resetGame = document.getElementById("resetGame");
 const timerDiv = document.getElementById("timerDiv");
+const loginBtn = document.getElementById("login");
 
 //Game state object with answers
 const gameState = {
@@ -177,3 +178,5 @@ function showCurrenQuestion() {
   currentScore.textContent = `Question ${gameState.currQuestion + 1} out of: ${preguntes.length}`;
   scoreboard.appendChild(currentScore);
 }
+
+//Login part
