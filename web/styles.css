@@ -79,4 +79,13 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 20px;
 }
 
+.loginForm{
+  display: grid;
+  align-items: center;
+  grid-template-columns: 300px;
+}
 
+.loginBtns{
+  display: grid;
+  grid-template-columns: 150px 150px;
+}

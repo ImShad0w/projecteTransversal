@@ -18,6 +18,11 @@ const scoreboard = document.querySelector(".scoreboard");
 const resetGame = document.getElementById("resetGame");
 const timerDiv = document.getElementById("timerDiv");
 const loginBtn = document.getElementById("login");
+const loginForm = document.getElementById("loginForm");
+const mainMenu = document.getElementById("mainMenu");
+
+//Add hidden thing
+mainMenu.classList.add("hidden");
 
 //Game state object with answers
 const gameState = {
@@ -68,6 +73,7 @@ startGame.addEventListener("click", () => {
 })
 
 function gameStart() {
+  loginBtn.classList.add("hidden");
   gameState.gameOver = false;
   generateQuestion();
   timer.startTimer();
@@ -145,6 +151,29 @@ function renderScore(score) {
   scoreboard.appendChild(scores);
   container.appendChild(scoreboard);
   resetGame.style.display = "block";
+  mainMenu.classList.remove("hidden");
+  mainMenu.addEventListener("click", () => {
+    //FIX: Tmporal fix for being able to go to the main menu
+    if (gameState.gameOver) {
+      gameState.currQuestion = 0;
+      fetch('questions.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // tell PHP we are sending JSON
+        },
+        body: JSON.stringify({ gameOver: gameState.gameOver })
+      })
+        .then(response => response.json())
+        .then(data => {
+          gameState.userAnswers.length = 0;
+          preguntes = data;
+          timer.resetTimer();
+          renderMainPage();
+          mainMenu.classList.add("hidden");
+        })// data returned from PHP
+        .catch(err => console.error(err));
+    }
+  })
   resetGame.addEventListener("click", () => {
     reseetGame();
     resetGame.style.display = "none";
@@ -179,4 +208,73 @@ function showCurrenQuestion() {
   scoreboard.appendChild(currentScore);
 }
 
+
 //Login part
+loginBtn.addEventListener("click", () => {
+  renderLogin();
+})
+
+function renderLogin() {
+  loginForm.innerHTML = "";
+  container.style.display = "none";
+  loginBtn.classList.add("hidden");
+  startGame.style.display = "none";
+  resetGame.style.display = "none";
+  const welcome = document.createElement("h1");
+  const username = document.createElement("input");
+  const password = document.createElement("input");
+  const submit = document.createElement("button");
+  const cancel = document.createElement("button");
+  const btnDiv = document.createElement("div");
+
+  welcome.textContent = "Welcome back!";
+  username.type = "text";
+  password.type = "password";
+  submit.textContent = "Login!";
+  cancel.textContent = "Go back";
+
+  btnDiv.appendChild(submit);
+  btnDiv.appendChild(cancel);
+  loginForm.appendChild(welcome);
+  loginForm.appendChild(username);
+  loginForm.appendChild(password);
+  loginForm.appendChild(btnDiv);
+  btnDiv.classList.add("loginBtns");
+  loginForm.classList.add("loginForm");
+
+  submit.addEventListener("click", () => {
+    fetch('login.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // tell PHP we are sending JSON
+      },
+      body: JSON.stringify({ username: username.value, password: password.value })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.login) {
+          //Render the dashboard
+        } else {
+          alert("Invalid username or password");
+          username.value = "";
+          password.value = "";
+        }
+      })// data returned from PHP
+      .catch(err => console.error(err));
+
+  })
+
+  cancel.addEventListener("click", () => {
+    loginForm.innerHTML = "";
+    renderMainPage();
+  })
+}
+
+function renderMainPage() {
+  scoreboard.innerHTML = "";
+  container.style.display = "block";
+  resetGame.style.display = "none";
+  startGame.style.display = "block";
+  loginBtn.classList.remove("hidden");
+}
