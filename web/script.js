@@ -20,7 +20,7 @@ const timerDiv = document.getElementById("timerDiv");
 const loginBtn = document.getElementById("login");
 const loginForm = document.getElementById("loginForm");
 const mainMenu = document.getElementById("mainMenu");
-
+const dashboard = document.getElementById("dashboard");
 //Add hidden thing
 mainMenu.classList.add("hidden");
 
@@ -253,8 +253,8 @@ function renderLogin() {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        if (data.login) {
-          //Render the dashboard
+        if (data.success) {
+          renderDashboard();
         } else {
           alert("Invalid username or password");
           username.value = "";
@@ -276,5 +276,137 @@ function renderMainPage() {
   container.style.display = "block";
   resetGame.style.display = "none";
   startGame.style.display = "block";
+  dashboard.innerHTML = "";
   loginBtn.classList.remove("hidden");
+}
+
+function renderDashboard() {
+  fetch('admin.php')
+    .then(response => response.json())
+    .then(data => {
+
+      loginForm.innerHTML = ""; // hide login form
+      dashboard.innerHTML = ""; // clear previous content
+      dashboard.classList.remove("hidden");
+
+      const buttonDiv = document.createElement("div");
+      const createBtn = document.createElement("button");
+      const logoutBtn = document.createElement("button");
+      const pContainer = document.createElement("div");
+
+      pContainer.classList.add("questions");
+      createBtn.textContent = "Create...";
+      logoutBtn.textContent = "Logout";
+
+      buttonDiv.classList.add("buttonsDiv");
+      buttonDiv.appendChild(createBtn);
+      buttonDiv.appendChild(logoutBtn);
+      dashboard.appendChild(buttonDiv);
+
+      data.forEach(pregunta => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        const pID = document.createElement("p");
+        const pPregunta = document.createElement("h3");
+        const pRespCorr = document.createElement("p");
+        const respsDiv = document.createElement("div");
+        const editButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
+
+        pID.textContent = `ID: ${pregunta.id}`;
+        pPregunta.textContent = pregunta.pregunta;
+        pRespCorr.textContent = `Correct: ${pregunta.resposta_correcta}`;
+        editButton.textContent = "Edit";
+        deleteButton.textContent = "Delete";
+        pregunta.respostes.forEach(resposta => {
+          const resp = document.createElement("p");
+          resp.textContent = resposta;
+          respsDiv.appendChild(resp);
+        });
+        editButton.addEventListener("click", () => {
+          editQuestion(pregunta);
+        });
+        card.appendChild(pID);
+        card.appendChild(pPregunta);
+        card.appendChild(pRespCorr);
+        card.appendChild(respsDiv);
+        card.appendChild(editButton);
+        card.appendChild(deleteButton);
+        pContainer.appendChild(card);
+      });
+      dashboard.appendChild(pContainer);
+    })
+    .catch(err => console.error(err));
+}
+
+function editQuestion(pregunta) {
+  // Find the card by its ID
+  const card = [...document.querySelectorAll(".card")]
+    .find(c => c.querySelector("p").textContent.includes(pregunta.id));
+
+  //Find and delete the buttons
+  const editBtn = card.querySelector("button:nth-of-type(1)");
+  const delBtn = card.querySelector("button:nth-of-type(2)");
+
+  editBtn.remove();
+  delBtn.remove();
+  if (!card) return;
+  //Question text
+  const pPregunta = card.querySelector("h3");
+  const qInput = document.createElement("input");
+  qInput.type = "text";
+  qInput.value = pregunta.pregunta;
+  pPregunta.replaceWith(qInput);
+
+  //Correct answer
+  const pRespCorr = card.querySelector("p:nth-of-type(2)");
+  const rInput = document.createElement("input");
+  rInput.type = "text";
+  rInput.value = pregunta.resposta_correcta;
+  pRespCorr.replaceWith(rInput);
+
+  //Respostes
+  const respsDiv = card.querySelector("div");
+  respsDiv.innerHTML = ""; // clear current <p> list
+
+  pregunta.respostes.forEach(resposta => {
+    const respInput = document.createElement("input");
+    respInput.type = "text";
+    respInput.value = resposta;
+    respsDiv.appendChild(respInput);
+  });
+
+  //Buttons 
+  const updateBtn = document.createElement("button");
+  const cancelBtn = document.createElement("button");
+
+  updateBtn.textContent = "Update";
+  cancelBtn.textContent = "Cancel";
+
+  card.appendChild(updateBtn);
+  card.appendChild(cancelBtn);
+
+  cancelBtn.addEventListener("click", () => {
+    renderDashboard();
+  })
+  updateBtn.addEventListener("click", () => {
+    //TODO: Create logic so that the button on click sends the updated values to the bd and re-renders the page
+    fetch('update.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // tell PHP we are sending JSON
+      },
+      body: JSON.stringify({ id: pregunta.id, pregunta: pregunta.pregunta, resposta_correcta: pregunta.resposta_correcta, respostes: pregunta.respostes })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          //Re render the new page with the new questions
+        } else {
+          //Give error and message optionally on what failed
+        }
+      })
+      .catch(err => console.error(err));
+  })
 }

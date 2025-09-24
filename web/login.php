@@ -9,7 +9,6 @@ try {
     $request = json_decode(file_get_contents("php://input"), true);
 
     if (!isset($request['username'], $request['password'])) {
-        http_response_code(400);
         echo json_encode([
             "success" => false
         ]);
@@ -18,7 +17,6 @@ try {
 
     $username = $request["username"];
     $password = $request["password"];
-
     // Fetch single user row
     $stmt = $pdo->prepare("SELECT username, password FROM users WHERE username = ?");
     $stmt->execute([$username]);
