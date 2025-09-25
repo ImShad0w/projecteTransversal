@@ -10,9 +10,9 @@ if (!empty($_SESSION["login"]) && $_SESSION["login"] === true) {
     $preguntes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($preguntes as $q) {
-        $stmt2 = $pdo->prepare("SELECT resposta FROM respostes WHERE pregunta_id = ?");
+        $stmt2 = $pdo->prepare("SELECT id, resposta FROM respostes WHERE pregunta_id = ?");
         $stmt2->execute([$q["id"]]);
-        $respostes = $stmt2->fetchAll(PDO::FETCH_COLUMN);
+        $respostes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
         $questions[] = [
             "id" => $q["id"],

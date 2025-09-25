@@ -284,7 +284,6 @@ function renderDashboard() {
   fetch('admin.php')
     .then(response => response.json())
     .then(data => {
-
       loginForm.innerHTML = ""; // hide login form
       dashboard.innerHTML = ""; // clear previous content
       dashboard.classList.remove("hidden");
@@ -303,6 +302,13 @@ function renderDashboard() {
       buttonDiv.appendChild(logoutBtn);
       dashboard.appendChild(buttonDiv);
 
+      //Creates a new question
+      createBtn.addEventListener("click", () => {
+        renderCreateForm();
+      });
+      logoutBtn.addEventListener("click", () => {
+        logoutFromAdmin();
+      })
       data.forEach(pregunta => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -320,7 +326,8 @@ function renderDashboard() {
         deleteButton.textContent = "Delete";
         pregunta.respostes.forEach(resposta => {
           const resp = document.createElement("p");
-          resp.textContent = resposta;
+          resp.textContent = resposta.resposta;
+          resp.dataset.id = resposta.id;
           respsDiv.appendChild(resp);
         });
         editButton.addEventListener("click", () => {
@@ -333,6 +340,28 @@ function renderDashboard() {
         card.appendChild(editButton);
         card.appendChild(deleteButton);
         pContainer.appendChild(card);
+
+        //Delete the pregunta
+        deleteButton.addEventListener("click", () => {
+          fetch('delete.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: pregunta.id })
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              if (data.success) {
+                renderDashboard();
+              } else {
+                alert(data.message)
+                renderDashboard();
+              }
+            })
+            .catch(err => console.error(err));
+        });
       });
       dashboard.appendChild(pContainer);
     })
@@ -372,7 +401,8 @@ function editQuestion(pregunta) {
   pregunta.respostes.forEach(resposta => {
     const respInput = document.createElement("input");
     respInput.type = "text";
-    respInput.value = resposta;
+    respInput.value = resposta.resposta;
+    respInput.dataset.id = resposta.id;
     respsDiv.appendChild(respInput);
   });
 
@@ -389,24 +419,143 @@ function editQuestion(pregunta) {
   cancelBtn.addEventListener("click", () => {
     renderDashboard();
   })
+
   updateBtn.addEventListener("click", () => {
-    //TODO: Create logic so that the button on click sends the updated values to the bd and re-renders the page
+    const card = updateBtn.closest(".card");
+
+    // Grab the first two inputs
+    const qInput = card.querySelector("input[type=text]:nth-of-type(1)");
+    const rInput = card.querySelector("input[type=text]:nth-of-type(2)");
+
+    // Extract values
+    const newPregunta = qInput.value;
+    const newRespCorr = rInput.value;
+
+    //Selects all of the text inputs in the card
+    const inputs = [...card.querySelectorAll("input[type=text]")];
+    const newRespostes = inputs.slice(2) //Grabs the 3rd input and the following after it
+      //Converts into an array of objects
+      .map(input => ({
+        id: input.dataset.id,
+        resposta: input.value
+      }));
     fetch('update.php', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json' // tell PHP we are sending JSON
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: pregunta.id, pregunta: pregunta.pregunta, resposta_correcta: pregunta.resposta_correcta, respostes: pregunta.respostes })
+      body: JSON.stringify({
+        id: pregunta.id,
+        pregunta: newPregunta,
+        resposta_correcta: newRespCorr,
+        respostes: newRespostes
+      })
     })
       .then(response => response.json())
       .then(data => {
         console.log(data);
         if (data.success) {
-          //Re render the new page with the new questions
+          console.log(data);
+          renderDashboard();
         } else {
-          //Give error and message optionally on what failed
+          alert(data.message)
+          renderDashboard();
+        }
+      })
+      .catch(err => console.error(err));
+  });
+}
+
+function renderCreateForm() {
+  //Clear out for the form
+  dashboard.innerHTML = "";
+
+  const formDiv = document.createElement("div");
+  const pInput = document.createElement("input");
+  const respCorrInp = document.createElement("input");
+  const respDiv = document.createElement("div");
+  const acceptBtn = document.createElement("button");
+  const cancelBtn = document.createElement("button");
+  const title = document.createElement("h1");
+  const respostesTitle = document.createElement("h2");
+
+  title.textContent = "Crea una nova pregunta";
+  respostesTitle.textContent = "Respostes: ";
+  pInput.type = "text";
+  respCorrInp.type = "number";
+  acceptBtn.textContent = "Accept";
+  cancelBtn.textContent = "Cancel";
+  pInput.placeholder = "Ex: Quina marca es famosa pel fundador: Mark Zuckerberg?";
+
+  respCorrInp.min = 0;
+  respCorrInp.max = 3;
+  respCorrInp.step = 1; // only allows integers 0,1,2,3
+  respCorrInp.value = 0; //default value
+  respDiv.appendChild(respostesTitle);
+  //Append 4 input for the answers
+  for (let i = 0; i < 4; i++) {
+    const respInput = document.createElement("input");
+    respInput.type = "text";
+    respDiv.appendChild(respInput);
+  }
+
+  formDiv.classList.add("card");
+  formDiv.appendChild(title);
+  formDiv.appendChild(pInput);
+  formDiv.appendChild(respCorrInp);
+  formDiv.appendChild(respDiv);
+  formDiv.appendChild(acceptBtn);
+  formDiv.appendChild(cancelBtn);
+  dashboard.appendChild(formDiv);
+  acceptBtn.addEventListener("click", () => {
+    const newResps = [...respDiv.querySelectorAll("input[type=text]")]; // Gets all answers
+    const respostes = newResps.map(input => ({
+      resposta: input.value
+    }));
+    fetch('create.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        pregunta: pInput.value,
+        resposta_correcta: respCorrInp.value,
+        respostes: respostes
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          console.log(data);
+          renderDashboard();
+        } else {
+          alert(data.message)
+          renderDashboard();
         }
       })
       .catch(err => console.error(err));
   })
+}
+
+function logoutFromAdmin() {
+  fetch('logout.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      login: false
+    })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderMainPage();
+      } else {
+        alert(data.message)
+      }
+    })
+    .catch(err => console.error(err));
+
 }
