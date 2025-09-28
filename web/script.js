@@ -97,7 +97,10 @@ function generateQuestion() {
   answers.forEach(resposta => {
     const resp = document.createElement("div");
     const text = document.createElement("p");
-    text.textContent = resposta;
+    text.textContent = resposta["resposta"];
+
+    //Image stuff
+    resp.style.backgroundImage = "url(https://upload.wikimedia.org/wikipedia/commons/1/1b/Adidas_2022_logo.svg)"
     //Add the class
     resp.classList.add("resposta")
     resp.appendChild(text);

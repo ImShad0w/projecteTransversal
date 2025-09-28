@@ -9,10 +9,17 @@ $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Prepare questions with answers
 $allQuestions = [];
 foreach ($questions as $q) {
-    $stmt2 = $pdo->prepare("SELECT resposta FROM respostes WHERE pregunta_id = ?");
+    $stmt2 = $pdo->prepare("SELECT resposta, imatge FROM respostes WHERE pregunta_id = ?");
     $stmt2->execute([$q['id']]);
-    $answers = $stmt2->fetchAll(PDO::FETCH_COLUMN);
+    $answers = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
+    $formattedAnswers = [];
+        foreach ($answers as $a) {
+            $formattedAnswers[] = [
+                'resposta' => $a['resposta'],
+                'imatge' => $a['imatge'] // this ensures the image field is in the JSON
+            ];
+        }
     $allQuestions[] = [
         'id' => $q['id'],
         'pregunta' => $q['pregunta'],

@@ -10,7 +10,8 @@ try {
 
     if (!isset($request['username'], $request['password'])) {
         echo json_encode([
-            "success" => false
+            "success" => false,
+            "message" => "Empty request"
         ]);
         exit;
     }
@@ -22,7 +23,7 @@ try {
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && $password == $user["password"]) {
+    if ($user && $password === $user["password"]) {
         // Login success
         $_SESSION["login"] = true;
 
@@ -33,7 +34,9 @@ try {
         // Login failed
         $_SESSION["login"] = false;
         echo json_encode([
-            "success" => false
+      "success" => false,
+      "Message" => "Invalid credentials"
+
         ]);
     }
     exit;
