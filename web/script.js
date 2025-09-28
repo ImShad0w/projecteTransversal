@@ -100,7 +100,7 @@ function generateQuestion() {
     text.textContent = resposta["resposta"];
 
     //Image stuff
-    resp.style.backgroundImage = "url(https://upload.wikimedia.org/wikipedia/commons/1/1b/Adidas_2022_logo.svg)"
+    resp.style.backgroundImage = `url(${resposta["imatge"]})`
     //Add the class
     resp.classList.add("resposta")
     resp.appendChild(text);
