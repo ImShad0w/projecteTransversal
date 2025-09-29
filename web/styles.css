@@ -143,6 +143,14 @@ h1, h2, h3, h4, h5, h6 {
   word-break: break-word;
 }
 
+.card > button{
+  background-color: var(--main-clr);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+}
+
 .card h3 {
   margin: 0;
 }
@@ -156,6 +164,15 @@ h1, h2, h3, h4, h5, h6 {
 .buttonsDiv{
   display: flex;
   justify-content: space-between;
+}
+
+.buttonsDiv > button{
+  background-color: var(--main-clr);
+  color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.5em;
 }
 
 #startGame{
