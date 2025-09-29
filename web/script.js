@@ -560,6 +560,9 @@ function renderCreateForm() {
       })
       .catch(err => console.error(err));
   })
+  cancelBtn.addEventListener("click", () => {
+    renderDashboard();
+  });
 }
 
 function logoutFromAdmin() {
