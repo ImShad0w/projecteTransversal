@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+  --main-clr: #2c363f;
+  --bg-clr: #49516F;
+  --card-clr: #9da39a;
+  --text-clr: #E2DDD6;
+}
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -16,6 +24,8 @@
 }
 
 body {
+  background-color: var(--bg-clr);
+  font-family: "Montserrat";
   /* 4. Add accessible line-height */
   line-height: 1.5;
   /* 5. Improve text rendering */
@@ -52,13 +62,13 @@ h1, h2, h3, h4, h5, h6 {
 /*
   10. Create a root stacking context
 */
+
 #root, #__next {
   isolation: isolate;
 }
 
 .resposta{
-  color: white;
-  background-color: gray;
+  background-color: white;
   padding: 20px;
   border-radius: 20px;
   cursor: pointer;
@@ -74,20 +84,41 @@ h1, h2, h3, h4, h5, h6 {
 
 .respostes{
   display: grid;
-  grid-template-columns: 200px 200px;
-  gap: 16px;
+  grid-template-columns: 400px 400px;
+  gap: 40px;
   margin-top: 20px;
+  justify-content: center;
 }
 
 .loginForm{
+  margin-top: 40px;
+  background-color: var(--text-clr);
+  padding: 20px;
   display: grid;
   align-items: center;
   grid-template-columns: 300px;
+  border-radius: 10px;
+}
+
+.loginForm > input{
+  margin-top: 10px;
+  border-radius: 10px;
+  border: solid 1px var(--main-clr);
+  padding: 10px 20px;
 }
 
 .loginBtns{
-  display: grid;
-  grid-template-columns: 150px 150px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.loginBtns > button{
+  padding: 10px 20px;
+  color: var(--text-clr);
+  background-color: var(--main-clr);
+  border-radius: 10px;
+  border: none;
 }
 
 #dashboard {
@@ -98,7 +129,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card {
-  background-color: #f9f9f9;
+  background-color: white;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -126,3 +157,71 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   justify-content: space-between;
 }
+
+#startGame{
+  margin-top: 50px;
+  padding: 40px;
+  width: 400px;
+  font-size: 2em;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--main-clr);
+  color: var(--text-clr);
+}
+
+#login{
+  margin-top: 250px;
+  padding: 25px 100px;
+  background-color: white;
+  border-radius: 20px;
+  font-size: 2em;
+}
+
+body > h1{
+  color: #E2DDD6;
+  font-size: 4em;
+  margin-top: 200px;
+}
+
+#timerDiv{
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  color: black;
+}
+
+#resetGame{
+  margin-top: 50px;
+}
+
+.scoreboard{
+  margin-top: 20px;
+  color: var(--main-clr);
+  font-size: 1.5em;
+}
+
+.pregunta{
+  color: var(--text-clr);
+  font-size: 1.5em;
+}
+
+#resetGame{
+  font-size: 2em;
+  color: var(--text-clr);
+  background-color: var(--main-clr);
+  border: none;
+  padding: 40px 80px;
+  border-radius: 20px;
+}
+
+#mainMenu{
+  margin-top: 50px;
+  font-size: 2em;
+  color: var(--main-clr);
+  background-color: var(--text-clr);
+  border: none;
+  padding: 30px 60px;
+  border-radius: 20px;
+}
+
+

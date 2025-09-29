@@ -99,19 +99,34 @@ function generateQuestion() {
     const text = document.createElement("p");
     text.textContent = resposta["resposta"];
 
-    //Image stuff
-    resp.style.backgroundImage = `url(${resposta["imatge"]})`
+    // Create the image element instead of using background
+    const img = document.createElement("img");
+    img.src = resposta["imatge"];
+    img.style.width = "75px";
+    img.style.height = "75px";
+    img.style.objectFit = "contain"; // keeps aspect ratio without stretching
+    img.style.marginLeft = "10px"; // space between text and image
+
+    // Layout flex to position text left and image right
+    resp.style.display = "flex";
+    resp.style.alignItems = "center";
+    resp.style.justifyContent = "space-between"; // text left, image right
+
     //Add the class
-    resp.classList.add("resposta")
+    resp.classList.add("resposta");
+
     resp.appendChild(text);
+    resp.appendChild(img); // append image after text
     respostes.appendChild(resp);
     container.appendChild(respostes);
+
     resp.addEventListener("click", () => {
       gameState.userAnswers.push({ id: preguntaID, resposta: answers.indexOf(resposta) });
       gameState.currQuestion++;
       checkGameState();
-    })
-  })
+    });
+  });
+
 }
 
 function checkGameState() {
@@ -181,6 +196,7 @@ function renderScore(score) {
     reseetGame();
     resetGame.style.display = "none";
     scoreboard.innerHTML = "";
+    mainMenu.classList.add("hidden");
   })
 }
 
@@ -207,7 +223,7 @@ function reseetGame() {
 function showCurrenQuestion() {
   scoreboard.innerHTML = "";
   const currentScore = document.createElement("h4");
-  currentScore.textContent = `Question ${gameState.currQuestion + 1} out of: ${preguntes.length}`;
+  currentScore.textContent = `Pregunta ${gameState.currQuestion + 1} de: ${preguntes.length}`;
   scoreboard.appendChild(currentScore);
 }
 
@@ -221,6 +237,7 @@ function renderLogin() {
   loginForm.innerHTML = "";
   container.style.display = "none";
   loginBtn.classList.add("hidden");
+  loginForm.classList.remove("hidden");
   startGame.style.display = "none";
   resetGame.style.display = "none";
   const welcome = document.createElement("h1");
@@ -236,8 +253,8 @@ function renderLogin() {
   submit.textContent = "Login!";
   cancel.textContent = "Go back";
 
-  btnDiv.appendChild(submit);
   btnDiv.appendChild(cancel);
+  btnDiv.appendChild(submit);
   loginForm.appendChild(welcome);
   loginForm.appendChild(username);
   loginForm.appendChild(password);
@@ -280,6 +297,8 @@ function renderMainPage() {
   resetGame.style.display = "none";
   startGame.style.display = "block";
   dashboard.innerHTML = "";
+  loginForm.classList.remove("loginForm");
+  loginForm.classList.add("hidden");
   loginBtn.classList.remove("hidden");
 }
 
@@ -289,6 +308,8 @@ function renderDashboard() {
     .then(data => {
       loginForm.innerHTML = ""; // hide login form
       dashboard.innerHTML = ""; // clear previous content
+      loginForm.classList.remove("loginForm");
+      loginForm.classList.add("hidden");
       dashboard.classList.remove("hidden");
 
       const buttonDiv = document.createElement("div");
