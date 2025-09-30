@@ -3,6 +3,11 @@
 services:
   web:
     image: php:apache
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
     build:
       context: ./images
       dockerfile: Dockerfile_php
@@ -20,8 +25,8 @@ services:
       # de caràcters i aleshores donarà problemes amb accents i caràcters especials
       # La BBDD es crearà a l'inici del contenidor amb els script d'inicialització
       # MYSQL_DATABASE: persones
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: DB_shad0w
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
       LANG: C.UTF-8
     #    El mysql no s'exposa a l'exterior
     #    L'aplicació web hi accedirà per la xarxa interna de docker
