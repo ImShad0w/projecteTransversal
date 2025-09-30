@@ -367,24 +367,29 @@ function renderDashboard() {
 
         //Delete the pregunta
         deleteButton.addEventListener("click", () => {
-          fetch('delete.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: pregunta.id })
-          })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data);
-              if (data.success) {
-                renderDashboard();
-              } else {
-                alert(data.message)
-                renderDashboard();
-              }
+          let del = confirm("Do you really want to delete this question?");
+          if (del) {
+            fetch('delete.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ id: pregunta.id })
             })
-            .catch(err => console.error(err));
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                if (data.success) {
+                  renderDashboard();
+                } else {
+                  alert(data.message)
+                  renderDashboard();
+                }
+              })
+              .catch(err => console.error(err));
+          } else {
+            renderDashboard();
+          }
         });
       });
       dashboard.appendChild(pContainer);
