@@ -1,5 +1,5 @@
-let preguntes = []
-let preguntesCorrectes;
+let preguntes = [];
+
 
 //Get the data from the php file
 fetch('questions.php')
