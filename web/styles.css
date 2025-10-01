@@ -28,7 +28,7 @@ button{
 
 body {
   background-color: var(--bg-clr);
-  font-family: "Montserrat";
+  font-family: "Montserrat", sans-serif;
   /* 4. Add accessible line-height */
   line-height: 1.5;
   /* 5. Improve text rendering */
