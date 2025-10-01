@@ -81,10 +81,6 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
-#resetGame{
-  display: none;
-}
-
 .respostes{
   display: grid;
   grid-template-columns: 400px 400px;
@@ -222,6 +218,7 @@ body > h1{
 }
 
 #resetGame{
+  display: none;
   font-size: 2em;
   color: var(--text-clr);
   background-color: var(--main-clr);
