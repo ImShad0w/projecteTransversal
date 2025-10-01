@@ -210,10 +210,6 @@ body > h1{
   color: black;
 }
 
-#resetGame{
-  margin-top: 50px;
-}
-
 .scoreboard{
   margin-top: 20px;
   color: var(--main-clr);
@@ -232,6 +228,7 @@ body > h1{
   border: none;
   padding: 40px 80px;
   border-radius: 20px;
+  margin-top: 50px;
 }
 
 #mainMenu{
