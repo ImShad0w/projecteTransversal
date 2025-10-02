@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "connection.php";
+require_once "connection.php";
 
 header('Content-Type: application/json');
 $request = json_decode(file_get_contents("php://input"), true);
@@ -12,10 +12,15 @@ if (!empty($_SESSION["login"]) && $_SESSION["login"] === true) {
         $stmt->execute([$request["pregunta"], $request["resposta_correcta"]]);
         $pregunta_id = $pdo->lastInsertId();
 
-        // Insert respostes
-        $stmt = $pdo->prepare("INSERT INTO respostes (pregunta_id, resposta) VALUES (?, ?)");
+        // Insert responses
         foreach ($request["respostes"] as $resposta) {
-            $stmt->execute([$pregunta_id, $resposta['resposta']]);
+            if (isset($resposta["imatge"]) && $resposta["imatge"] != null) {
+                $stmt = $pdo->prepare("INSERT INTO respostes (pregunta_id, resposta, imatge) VALUES (?, ?, ?)");
+                $stmt->execute([$pregunta_id, $resposta["resposta"], $resposta["imatge"]]);
+            } else {
+                $stmt = $pdo->prepare("INSERT INTO respostes (pregunta_id, resposta, imatge) VALUES (?, ?, ?)");
+                $stmt->execute([$pregunta_id, $resposta["resposta"], null]);
+            }
         }
 
         echo json_encode(["success" => true]);
@@ -26,4 +31,4 @@ if (!empty($_SESSION["login"]) && $_SESSION["login"] === true) {
 // If unauthorized or empty
 echo json_encode(["success" => false, "message" => "Unauthorized or empty request"]);
 exit;
-?>
+
