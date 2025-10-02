@@ -537,6 +537,7 @@ function renderCreateForm() {
   for (let i = 0; i < 4; i++) {
     const imgInp = document.createElement("input");
     imgInp.type = "file";
+    imgInp.accept = "image/png, image/jpeg, image/gif, image/webp";
     imgDiv.appendChild(imgInp);
   }
 
