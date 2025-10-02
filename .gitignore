@@ -1,2 +1,7 @@
 db_data/
 .env
+
+# For the stupid line rule in phpactor
+phpcs.xml
+
+.php*

@@ -1,13 +1,12 @@
 let preguntes = [];
 
-
 //Get the data from the php file
-fetch('questions.php')
-  .then(response => response.json()) // Parse the JSON automatically
-  .then(data => {
+fetch("questions.php")
+  .then((response) => response.json()) // Parse the JSON automatically
+  .then((data) => {
     preguntes = data;
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));
 
 //Get the base fields for rendering
 const container = document.querySelector(".container");
@@ -64,13 +63,13 @@ const timer = {
   stopTimer: function () {
     clearInterval(this.timerID);
     console.log("Timer stopped");
-  }
+  },
 };
 
 startGame.addEventListener("click", () => {
   gameStart();
   startGame.style.display = "none";
-})
+});
 
 function gameStart() {
   loginBtn.classList.add("hidden");
@@ -94,7 +93,7 @@ function generateQuestion() {
   preg.appendChild(question);
   //Append the question to the container
   container.appendChild(preg);
-  answers.forEach(resposta => {
+  answers.forEach((resposta) => {
     const resp = document.createElement("div");
     const text = document.createElement("p");
     text.textContent = resposta["resposta"];
@@ -121,12 +120,14 @@ function generateQuestion() {
     container.appendChild(respostes);
 
     resp.addEventListener("click", () => {
-      gameState.userAnswers.push({ id: preguntaID, resposta: answers.indexOf(resposta) });
+      gameState.userAnswers.push({
+        id: preguntaID,
+        resposta: answers.indexOf(resposta),
+      });
       gameState.currQuestion++;
       checkGameState();
     });
   });
-
 }
 
 function checkGameState() {
@@ -146,19 +147,19 @@ function showGameResults() {
 }
 
 function getScore() {
-  fetch('submit.php', {
-    method: 'POST',
+  fetch("submit.php", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json' // tell PHP we are sending JSON
+      "Content-Type": "application/json", // tell PHP we are sending JSON
     },
-    body: JSON.stringify(gameState.userAnswers)
+    body: JSON.stringify(gameState.userAnswers),
   })
-    .then(response => response.json())
-    .then(data => {
+    .then((response) => response.json())
+    .then((data) => {
       renderScore(data.score);
       timer.resetTimer();
-    })// data returned from PHP
-    .catch(err => console.error(err));
+    }) // data returned from PHP
+    .catch((err) => console.error(err));
 }
 
 function renderScore(score) {
@@ -174,51 +175,50 @@ function renderScore(score) {
     //FIX: Tmporal fix for being able to go to the main menu
     if (gameState.gameOver) {
       gameState.currQuestion = 0;
-      fetch('questions.php', {
-        method: 'POST',
+      fetch("questions.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json' // tell PHP we are sending JSON
+          "Content-Type": "application/json", // tell PHP we are sending JSON
         },
-        body: JSON.stringify({ gameOver: gameState.gameOver })
+        body: JSON.stringify({ gameOver: gameState.gameOver }),
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           gameState.userAnswers.length = 0;
           preguntes = data;
           timer.resetTimer();
           renderMainPage();
           mainMenu.classList.add("hidden");
-        })// data returned from PHP
-        .catch(err => console.error(err));
+        }) // data returned from PHP
+        .catch((err) => console.error(err));
     }
-  })
+  });
   resetGame.addEventListener("click", () => {
     reseetGame();
     resetGame.style.display = "none";
     scoreboard.innerHTML = "";
     mainMenu.classList.add("hidden");
-  })
+  });
 }
 
 function reseetGame() {
   gameState.currQuestion = 0;
-  fetch('questions.php', {
-    method: 'POST',
+  fetch("questions.php", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json' // tell PHP we are sending JSON
+      "Content-Type": "application/json", // tell PHP we are sending JSON
     },
-    body: JSON.stringify({ gameOver: gameState.gameOver })
+    body: JSON.stringify({ gameOver: gameState.gameOver }),
   })
-    .then(response => response.json())
-    .then(data => {
+    .then((response) => response.json())
+    .then((data) => {
       gameState.userAnswers.length = 0;
       preguntes = data;
       timer.resetTimer();
       gameStart();
-    })// data returned from PHP
-    .catch(err => console.error(err));
+    }) // data returned from PHP
+    .catch((err) => console.error(err));
 }
-
 
 function showCurrenQuestion() {
   scoreboard.innerHTML = "";
@@ -227,11 +227,10 @@ function showCurrenQuestion() {
   scoreboard.appendChild(currentScore);
 }
 
-
 //Login part
 loginBtn.addEventListener("click", () => {
   renderLogin();
-})
+});
 
 function renderLogin() {
   loginForm.innerHTML = "";
@@ -263,15 +262,18 @@ function renderLogin() {
   loginForm.classList.add("loginForm");
 
   submit.addEventListener("click", () => {
-    fetch('login.php', {
-      method: 'POST',
+    fetch("login.php", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json' // tell PHP we are sending JSON
+        "Content-Type": "application/json", // tell PHP we are sending JSON
       },
-      body: JSON.stringify({ username: username.value, password: password.value })
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log(data);
         if (data.success) {
           renderDashboard();
@@ -280,15 +282,14 @@ function renderLogin() {
           username.value = "";
           password.value = "";
         }
-      })// data returned from PHP
-      .catch(err => console.error(err));
-
-  })
+      }) // data returned from PHP
+      .catch((err) => console.error(err));
+  });
 
   cancel.addEventListener("click", () => {
     loginForm.innerHTML = "";
     renderMainPage();
-  })
+  });
 }
 
 function renderMainPage() {
@@ -303,9 +304,9 @@ function renderMainPage() {
 }
 
 function renderDashboard() {
-  fetch('admin.php')
-    .then(response => response.json())
-    .then(data => {
+  fetch("admin.php")
+    .then((response) => response.json())
+    .then((data) => {
       loginForm.innerHTML = ""; // hide login form
       dashboard.innerHTML = ""; // clear previous content
       loginForm.classList.remove("loginForm");
@@ -332,8 +333,8 @@ function renderDashboard() {
       });
       logoutBtn.addEventListener("click", () => {
         logoutFromAdmin();
-      })
-      data.forEach(pregunta => {
+      });
+      data.forEach((pregunta) => {
         const card = document.createElement("div");
         card.classList.add("card");
         const pID = document.createElement("p");
@@ -348,7 +349,7 @@ function renderDashboard() {
         pRespCorr.textContent = `Correct: ${pregunta.resposta_correcta}`;
         editButton.textContent = "Edit";
         deleteButton.textContent = "Delete";
-        pregunta.respostes.forEach(resposta => {
+        pregunta.respostes.forEach((resposta) => {
           const resp = document.createElement("p");
           resp.textContent = resposta.resposta;
           resp.dataset.id = resposta.id;
@@ -369,24 +370,24 @@ function renderDashboard() {
         deleteButton.addEventListener("click", () => {
           let del = confirm("Do you really want to delete this question?");
           if (del) {
-            fetch('delete.php', {
-              method: 'POST',
+            fetch("delete.php", {
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
               },
-              body: JSON.stringify({ id: pregunta.id })
+              body: JSON.stringify({ id: pregunta.id }),
             })
-              .then(response => response.json())
-              .then(data => {
+              .then((response) => response.json())
+              .then((data) => {
                 console.log(data);
                 if (data.success) {
                   renderDashboard();
                 } else {
-                  alert(data.message)
+                  alert(data.message);
                   renderDashboard();
                 }
               })
-              .catch(err => console.error(err));
+              .catch((err) => console.error(err));
           } else {
             renderDashboard();
           }
@@ -394,13 +395,14 @@ function renderDashboard() {
       });
       dashboard.appendChild(pContainer);
     })
-    .catch(err => console.error(err));
+    .catch((err) => console.error(err));
 }
 
 function editQuestion(pregunta) {
   // Find the card by its ID
-  const card = [...document.querySelectorAll(".card")]
-    .find(c => c.querySelector("p").textContent.includes(pregunta.id));
+  const card = [...document.querySelectorAll(".card")].find((c) =>
+    c.querySelector("p").textContent.includes(pregunta.id),
+  );
 
   //Find and delete the buttons
   const editBtn = card.querySelector("button:nth-of-type(1)");
@@ -427,15 +429,16 @@ function editQuestion(pregunta) {
   const respsDiv = card.querySelector("div");
   respsDiv.innerHTML = ""; // clear current <p> list
 
-  pregunta.respostes.forEach(resposta => {
+  pregunta.respostes.forEach((resposta) => {
     const respInput = document.createElement("input");
     respInput.type = "text";
+    respInput.style.width = "175px";
     respInput.value = resposta.resposta;
     respInput.dataset.id = resposta.id;
     respsDiv.appendChild(respInput);
   });
 
-  //Buttons 
+  //Buttons
   const updateBtn = document.createElement("button");
   const cancelBtn = document.createElement("button");
 
@@ -447,7 +450,7 @@ function editQuestion(pregunta) {
 
   cancelBtn.addEventListener("click", () => {
     renderDashboard();
-  })
+  });
 
   updateBtn.addEventListener("click", () => {
     const card = updateBtn.closest(".card");
@@ -462,36 +465,37 @@ function editQuestion(pregunta) {
 
     //Selects all of the text inputs in the card
     const inputs = [...card.querySelectorAll("input[type=text]")];
-    const newRespostes = inputs.slice(2) //Grabs the 3rd input and the following after it
+    const newRespostes = inputs
+      .slice(2) //Grabs the 3rd input and the following after it
       //Converts into an array of objects
-      .map(input => ({
+      .map((input) => ({
         id: input.dataset.id,
-        resposta: input.value
+        resposta: input.value,
       }));
-    fetch('update.php', {
-      method: 'POST',
+    fetch("update.php", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         id: pregunta.id,
         pregunta: newPregunta,
         resposta_correcta: newRespCorr,
-        respostes: newRespostes
-      })
+        respostes: newRespostes,
+      }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log(data);
         if (data.success) {
           console.log(data);
           renderDashboard();
         } else {
-          alert(data.message)
+          alert(data.message);
           renderDashboard();
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   });
 }
 
@@ -507,6 +511,7 @@ function renderCreateForm() {
   const cancelBtn = document.createElement("button");
   const title = document.createElement("h1");
   const respostesTitle = document.createElement("h2");
+  const imgDiv = document.createElement("div");
 
   title.textContent = "Crea una nova pregunta";
   respostesTitle.textContent = "Respostes: ";
@@ -514,7 +519,8 @@ function renderCreateForm() {
   respCorrInp.type = "number";
   acceptBtn.textContent = "Accept";
   cancelBtn.textContent = "Cancel";
-  pInput.placeholder = "Ex: Quina marca es famosa pel fundador: Mark Zuckerberg?";
+  pInput.placeholder =
+    "Ex: Quina marca es famosa pel fundador: Mark Zuckerberg?";
 
   respCorrInp.min = 0;
   respCorrInp.max = 3;
@@ -528,66 +534,105 @@ function renderCreateForm() {
     respDiv.appendChild(respInput);
   }
 
+  for (let i = 0; i < 4; i++) {
+    const imgInp = document.createElement("input");
+    imgInp.type = "file";
+    imgDiv.appendChild(imgInp);
+  }
+
   formDiv.classList.add("card");
   formDiv.appendChild(title);
   formDiv.appendChild(pInput);
   formDiv.appendChild(respCorrInp);
   formDiv.appendChild(respDiv);
+  formDiv.appendChild(imgDiv);
   formDiv.appendChild(acceptBtn);
   formDiv.appendChild(cancelBtn);
   dashboard.appendChild(formDiv);
+
   acceptBtn.addEventListener("click", () => {
-    const newResps = [...respDiv.querySelectorAll("input[type=text]")]; // Gets all answers
-    const respostes = newResps.map(input => ({
-      resposta: input.value
-    }));
-    fetch('create.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        pregunta: pInput.value,
-        resposta_correcta: respCorrInp.value,
-        respostes: respostes
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.success) {
-          console.log(data);
-          renderDashboard();
-        } else {
-          alert(data.message)
-          renderDashboard();
+    const newResps = [...respDiv.querySelectorAll("input[type=text]")]; // answer inputs
+    const newImgs = [...imgDiv.querySelectorAll("input[type=file]")]; // image inputs
+
+    //TODO: Transform img to base64 and send as string to php
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        //Will either resolve and give value or reject and give error
+        const reader = new FileReader();
+        reader.onload = () => {
+          //When loaded we read the value
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Async function to create the array
+    async function createRespostesArray() {
+      const respostesArray = [];
+
+      for (let i = 0; i < newResps.length; i++) {
+        let base64 = null;
+        if (newImgs[i].files[0]) {
+          base64 = await fileToBase64(newImgs[i].files[0]);
         }
+
+        respostesArray.push({
+          resposta: newResps[i].value,
+          imatge: base64, // Base64 string or null
+        });
+      }
+      return respostesArray;
+    }
+
+    createRespostesArray().then((respostes) => {
+      fetch("create.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pregunta: pInput.value,
+          resposta_correcta: respCorrInp.value,
+          respostes: respostes,
+        }),
       })
-      .catch(err => console.error(err));
-  })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            console.log(data);
+            renderDashboard();
+          } else {
+            alert(data.message);
+            renderDashboard();
+          }
+        })
+        .catch((err) => console.error(err));
+    });
+  });
   cancelBtn.addEventListener("click", () => {
     renderDashboard();
   });
 }
 
 function logoutFromAdmin() {
-  fetch('logout.php', {
-    method: 'POST',
+  fetch("logout.php", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      login: false
-    })
+      login: false,
+    }),
   })
-    .then(response => response.json())
-    .then(data => {
+    .then((response) => response.json())
+    .then((data) => {
       if (data.success) {
         renderMainPage();
       } else {
-        alert(data.message)
+        alert(data.message);
       }
     })
-    .catch(err => console.error(err));
-
+    .catch((err) => console.error(err));
 }
