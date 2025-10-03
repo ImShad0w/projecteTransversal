@@ -20,8 +20,35 @@ const loginBtn = document.getElementById("login");
 const loginForm = document.getElementById("loginForm");
 const mainMenu = document.getElementById("mainMenu");
 const dashboard = document.getElementById("dashboard");
+const greeting = document.getElementById("greeting");
 //Add hidden thing
 mainMenu.classList.add("hidden");
+
+//Local storage part
+let firstVisit = localStorage.getItem("greeting");
+(function renderGreeting() {
+  if (firstVisit === null) {
+    greeting.innerHTML = "";
+    const nameInp = document.createElement("input");
+    const submit = document.createElement("button");
+    nameInp.type = "text";
+    submit.textContent = "Add name!";
+    greeting.appendChild(nameInp);
+    greeting.appendChild(submit);
+    submit.addEventListener("click", () => {
+      localStorage.setItem("greeting", nameInp.value);
+      firstVisit = false;
+      console.log("Name added!");
+      greeting.innerHTML = "";
+    });
+  } else {
+    greeting.style.display = "block";
+    const greet = document.createElement("h1");
+    greet.style.color = "white";
+    greet.textContent = `Hola, ${localStorage.getItem("greeting")}!`;
+    greeting.appendChild(greet);
+  }
+})();
 
 //Game state object with answers
 const gameState = {
@@ -69,6 +96,7 @@ const timer = {
 startGame.addEventListener("click", () => {
   gameStart();
   startGame.style.display = "none";
+  greeting.style.display = "none";
 });
 
 function gameStart() {
@@ -172,7 +200,6 @@ function renderScore(score) {
   resetGame.style.display = "block";
   mainMenu.classList.remove("hidden");
   mainMenu.addEventListener("click", () => {
-    //FIX: Tmporal fix for being able to go to the main menu
     if (gameState.gameOver) {
       gameState.currQuestion = 0;
       fetch("questions.php", {
