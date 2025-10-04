@@ -28,7 +28,7 @@ button{
 
 body {
   background-color: var(--bg-clr);
-  font-family: "Montserrat";
+  font-family: "Montserrat", sans-serif;
   /* 4. Add accessible line-height */
   line-height: 1.5;
   /* 5. Improve text rendering */
@@ -78,10 +78,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hidden{
-  display: none;
-}
-
-#resetGame{
   display: none;
 }
 
@@ -210,10 +206,6 @@ body > h1{
   color: black;
 }
 
-#resetGame{
-  margin-top: 50px;
-}
-
 .scoreboard{
   margin-top: 20px;
   color: var(--main-clr);
@@ -226,12 +218,14 @@ body > h1{
 }
 
 #resetGame{
+  display: none;
   font-size: 2em;
   color: var(--text-clr);
   background-color: var(--main-clr);
   border: none;
   padding: 40px 80px;
   border-radius: 20px;
+  margin-top: 50px;
 }
 
 #mainMenu{
