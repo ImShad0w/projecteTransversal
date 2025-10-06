@@ -17,8 +17,7 @@ El projecte està allotjat a **Vercel**.
 ## Requisits
 Per executar el projecte en un entorn local, cal disposar dels components següents:
 - **Docker** i **Docker Compose** instal·lats al sistema.  
-- Un fitxer **.env** amb les variables d’entorn necessàries per a la configuració del projecte (per exemple, paràmetres de la base de dades o configuracions del servidor).  
-- Connexió a Internet (només necessària per a alguns recursos externs o dependències).
+- Un fitxer **.env** amb les variables d’entorn necessàries per a la configuració del projecte (per exemple, paràmetres de la base de dades o configuracions del servidor).
 
 ### Exemple de fitxer `.env`
 ```
