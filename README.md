@@ -35,5 +35,4 @@ docker-compose up -d
 ```
 
 ## Contribució als Objectius de Desenvolupament Sostenible (ODS)
-Aquest projecte contribueix a l’**ODS 4: Educació de qualitat**, ja que fomenta l’aprenentatge interactiu i autònom mitjançant una experiència lúdica.  
-UMDP té com a finalitat fer que l’educació sigui més accessible i motivadora, oferint una manera divertida d’adquirir coneixements sobre marques comercials.
+Aquest projecte dona suport a l’**ODS 4: Educació de qualitat**, ja que promou l’aprenentatge d’una manera divertida i accessible per a tothom.
